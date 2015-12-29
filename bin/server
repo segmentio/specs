@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+'use strict'
+
+let app = require('..');
+
+/**
+ * Run the server.
+ */
+
+app.listen(3000);
