@@ -23,5 +23,9 @@ watch-build:
 	$(watchify) -v -t [ babelify --presets [ react es2015 ] ] \
 		client/index.js -o build/build.js
 
+docker:
+	docker build -t segment/specs .
+	docker push segment/specs:latest
+
 
 .PHONY: build server
