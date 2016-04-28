@@ -31,7 +31,6 @@ module.exports = {
       }
     ]
   },
-  plugins: [ new HMRPlugin ],
   devServer: {
     contentBase: './client',
     historyApiFallback: true,
