@@ -83,9 +83,9 @@ function *serve(next){
  */
 
 app.use(route.get('/', index));
-app.use(route.get('/clusters', list));
-app.use(route.get('/services', services));
-app.use(route.get('/task', task));
+app.use(route.get('/api/clusters', list));
+app.use(route.get('/api/clusters/:cluster', services));
+app.use(route.get('/api/clusters/:cluster/task/:task', task));
 
 /**
  * Render the index page
@@ -100,27 +100,26 @@ function *index(){
  */
 
 function *list(){
-  let ecs = this.state.ecs; 
+  let ecs = this.state.ecs;
   let clusters = yield ecs.clusters();
   this.body = clusters;
 }
 
 /**
  * Returns a json array of a given cluster in
- * the query parameter
+ * the path parameter.
  *
- * @param {String} ?cluster
+ * @param {String} cluster
  */
 
-function *services(){
-  let cluster = this.query.cluster;
+function *services(cluster){
   let ecs = this.state.ecs;
   let services = yield ecs.services(cluster);
 
   let taskCalls = services.map((service) => {
     return ecs.task(service.taskDefinition);
   });
-  
+
   let tasks = yield Promise.all(taskCalls);
   services.forEach((service, i) => {
     service.task = tasks[i].taskDefinition;
@@ -131,13 +130,12 @@ function *services(){
 
 /**
  * Further describes a task, given the ARN in
- * the query parameter
+ * the path parameter
  *
- * @param {String} ?task
+ * @param {String} taskArn
  */
 
-function *task(){
-  let taskArn = this.query.task;
+function *task(taskArn){
   let ecs = this.state.ecs;
   let task = yield ecs.task(taskArn);
   this.body = task;
