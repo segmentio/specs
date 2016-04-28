@@ -3,18 +3,12 @@ import React, { Component } from 'react';
 import request from 'superagent';
 import Batch from 'batch';
 import flatten from 'flatten';
+import Loader from 'react-loader';
 import ErrorMessage from '../../components/error-message';
 import Sidebar from '../../components/sidebar';
 import ServiceList from '../../components/service-list';
 import Service from '../service';
 import styles from './index.css';
-
-//
-// TODO
-//
-//  - loading state for clusters
-//  - loading state for services
-//
 
 export default class ClustersContainer extends Component {
   constructor(props, context) {
@@ -34,6 +28,7 @@ export default class ClustersContainer extends Component {
 
   render() {
     const activeClusterArn = this.getActiveClusterArn();
+    const isLoading = !!this.state.error || !!this.state.services.length;
     return (
       <div className={styles.ClustersContainer}>
         <header>
@@ -47,11 +42,13 @@ export default class ClustersContainer extends Component {
             searchTerm={this.state.searchTerm}
             setSearchTerm={::this.setSearchTerm}
             selectCluster={::this.setActiveCluster} />
-          {this.renderError()}
-          <ServiceList
-            services={this.state.services}
-            searchTerm={this.state.searchTerm}
-            activeClusterArn={activeClusterArn} />
+          <Loader loaded={isLoading} color="#3cc76a">
+            {this.renderError()}
+            <ServiceList
+              services={this.state.services}
+              searchTerm={this.state.searchTerm}
+              activeClusterArn={activeClusterArn} />
+          </Loader>
         </div>
 
         {this.renderServiceSheet()}
