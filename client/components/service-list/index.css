@@ -1,0 +1,64 @@
+
+.ServiceList {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: -5px;
+}
+
+.ServiceListItem {
+  display: inline-block;
+  width: 216px;
+  height: 193px;
+  box-sizing: border-box;
+  list-style: none;
+  margin: 5px;
+}
+
+
+.ServiceListItem a {
+  height: 100%;
+  width: 100%;
+  display: block;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  padding-left: 5px;
+  padding-right: 5px;
+  text-align: center;
+  position: relative;
+  border: 1px solid #e3e4e6;
+  background: #fff;
+  border-radius: 4px;
+  font-family: Freight Sans,Verdana,Geneva,sans-serif;
+  box-shadow: 0 1px 0 rgba(0,0,0,.05);
+  box-sizing: border-box;
+  transform: translateZ(0);
+}
+
+.ServiceListItem a:focus,
+.ServiceListItem a:hover {
+  border-color: #3cc76a;
+}
+
+.ServiceListItem h3 {
+  margin: 0;
+  padding: 0;
+  font-size: 24px;
+  margin-bottom: 15px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+.ServiceListItem p {
+  margin: 0;
+  padding: 0;
+  text-transform: capitalize;
+  display: inline-block;
+  color: #707479;
+  letter-spacing: 1;
+  font-weight: 400;
+  font-size: 14px;
+}

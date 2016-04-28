@@ -1,0 +1,44 @@
+
+.Search {
+  position: relative;
+}
+
+.Search::before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  background-image: url('./icons.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.Search input {
+  width: 200px;
+  border: 1px solid #e3e4e6;
+  height: 40px;
+  border-radius: 4px;
+  padding-left: 35px;
+  font-size: 14px;
+  color: #736448;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.Search input::placeholder {
+  color: var(--color-fog);
+  font-size: 18px;
+  font-weight: 300;
+  text-transform: lowercase;
+  font-family: var(--font-family-caps);
+}
+
+.Search input:focus {
+  border-color: #5CCC5C;
+  box-shadow: 0px 0px 4px 0px rgba(92,204,92,0.50);
+}

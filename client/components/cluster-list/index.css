@@ -1,0 +1,51 @@
+
+.ClusterList {}
+
+.ClusterList h2 {
+  font-size: 18px;
+  color: #54585e;
+  text-transform: lowercase;
+  line-height: 20px;
+  font-family: Freight Sans Small Caps,Verdana,Geneva,sans-serif;
+  margin-bottom: 10px;
+  font-weight: 400;
+  display: block;
+}
+
+.ClusterList ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ClusterListItem {
+  align-items: center;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  color: #707479;
+  cursor: pointer;
+  display: flex;
+  font-family: Freight Sans Small Caps,Verdana,Geneva,sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  justify-content: space-between;
+  line-height: 29px;
+  margin-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  position: relative;
+  text-transform: lowercase;
+  transition: opacity .1s ease-in-out;
+}
+
+.ClusterListItem--is-active {
+  background-color: #fff;
+  color: #3cc76a;
+  border-color: #3cc76a;
+  box-shadow: 0 1px 0 rgba(0,0,0,.05);
+}
+
+.ClusterListItem a {
+  width: 100%;
+  height: 100%;
+}

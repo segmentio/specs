@@ -28,7 +28,25 @@ module.exports = {
           'react-hot',
           'babel'
         ]
-      }
+      },
+      {
+        test: /\.css$/,
+        include: /client/,
+        loaders: [
+          'style',
+          'css?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+          'postcss'
+        ]
+      },
+      {
+        test: /\.css$/,
+        exclude: /client/,
+        loader: 'style!css'
+      },
+      {
+        test: /\.svg$/,
+        loader: 'url'
+      },
     ]
   },
   devServer: {

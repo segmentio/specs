@@ -1,0 +1,30 @@
+
+.ServiceStats {}
+
+.ServiceStats table {
+  font-size: 16px;
+  color: #54585E;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.ServiceStats th {
+  text-align: right;
+  font-weight: 500;
+  width: 38%;
+}
+
+.ServiceStats td {
+  text-align: left;
+  padding-left: 7px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+.ServiceStats--left-aligned th {
+  text-align: left;
+  font-weight: 500;
+  width: 60px;
+}
