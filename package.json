@@ -2,7 +2,7 @@
   "name": "specs",
   "version": "1.0.0",
   "description": "Peer into your ECS clusters",
-  "main": "server/lib/app",
+  "main": "server/app",
   "repository": {
     "type": "git",
     "url": "github.com/segmentio/specs"
