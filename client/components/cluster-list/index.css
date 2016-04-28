@@ -22,19 +22,13 @@
   align-items: center;
   border-radius: 4px;
   border: 1px solid transparent;
-  color: #707479;
-  cursor: pointer;
   display: flex;
-  font-family: Freight Sans Small Caps,Verdana,Geneva,sans-serif;
-  font-size: 16px;
-  font-weight: 400;
   justify-content: space-between;
   line-height: 29px;
   margin-bottom: 5px;
   padding-left: 10px;
   padding-right: 10px;
   position: relative;
-  text-transform: lowercase;
   transition: opacity .1s ease-in-out;
 }
 
@@ -46,6 +40,11 @@
 }
 
 .ClusterListItem a {
+  font-family: Freight Sans Small Caps,Verdana,Geneva,sans-serif;
+  text-transform: lowercase;
+  font-size: 16px;
+  font-weight: 400;
+  color: #707479;
   width: 100%;
   height: 100%;
 }
