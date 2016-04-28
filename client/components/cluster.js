@@ -18,8 +18,7 @@ let ClusterItem = React.createClass({
 
   componentDidMount() {
     request
-      .get('/services')
-      .query({ cluster: this.state.clusterArn })
+      .get(`/api/clusters/${encodeURIComponent(this.state.clusterArn)}`)
       .end((err, res) => {
         if (err) throw err;
         this.setState({ services: res.body });
@@ -41,7 +40,7 @@ let ClusterItem = React.createClass({
         <div>instances: {state.registeredContainerInstancesCount}</div>
         <div>{state.activeServicesCount} services: {serviceNames.join(', ')}</div>
         <div>
-             running: {state.runningTasksCount}, 
+             running: {state.runningTasksCount},
              pending: {state.pendingTasksCount}
         </div>
       </div>
@@ -60,7 +59,7 @@ let ClustersOverview = React.createClass({
 
   componentDidMount() {
     request
-      .get('/clusters')
+      .get('/api/clusters')
       .end((err, res) => {
         if (err) throw err;
         this.setState({ clusters: res.body.clusters });
@@ -82,7 +81,7 @@ let ClustersOverview = React.createClass({
 });
 
 /**
- * Render a detailed view for an individual cluster, 
+ * Render a detailed view for an individual cluster,
  * with all the services included.
  */
 
@@ -90,11 +89,10 @@ let ClusterView = React.createClass({
   getInitialState() {
     return { services: [] };
   },
- 
+
   componentDidMount() {
     request
-      .get('/services')
-      .query({ cluster: this.props.params.cluster })
+      .get(`/api/clusters/${encodeURIComponent(this.props.params.cluster)}`)
       .end((err, res) => {
         if (err) throw err;
         this.setState({ services: res.body })
