@@ -8,7 +8,7 @@
 In one terminal window, do:
 
 ```
-$ make server
+$ aws-vault exec <env> -- make server
 ```
 
 In another, do:
