@@ -65,17 +65,26 @@ app.use(route.get('/api/clusters/:cluster', services));
 app.use(route.get('/api/clusters/:cluster/task/:task', task));
 
 /**
- * App routes.
+ * Static routes.
  */
 
-app.use(serve('./build'));
+app.use(route.get('/bundle.js', bundle));
+app.use(route.get('/*', index));
 
 /**
- * Render the index page
+ * Transfer the index page
  */
 
 function *index(){
-  yield this.render('index');
+  yield send(this, 'build/index.html');
+}
+
+/**
+ * Transfer js bundle
+ */
+
+function *bundle(){
+  yield send(this, 'build/bundle.js');
 }
 
 /**

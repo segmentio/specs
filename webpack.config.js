@@ -34,6 +34,7 @@ module.exports = {
   plugins: [ new HMRPlugin ],
   devServer: {
     contentBase: './client',
+    historyApiFallback: true,
     proxy: {
       '/api/*': {
         target: 'http://localhost:3000/'
