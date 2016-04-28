@@ -3,13 +3,13 @@
 
 let logger = require('koa-logger');
 let route = require('koa-route');
-let views = require('koa-views');
 let send = require('koa-send');
 let AWS = require('aws-sdk');
 let cors = require('kcors');
 let path = require('path');
 let ECS = require('./ecs');
 let koa = require('koa');
+let serve = require('koa-static');
 
 /**
  * Create our app
@@ -57,35 +57,18 @@ app.use(function *(next){
 });
 
 /**
- * Add the views handling.
- */
-
-app.use(views('../views'));
-
-/**
- * Add the static content.
- */
-
-const BUILD_PATH = '/build';
-
-app.use(route.get(BUILD_PATH + '/(.*)', serve));
-
-function *serve(next){
-  if (this.method == 'HEAD' || this.method == 'GET') {
-    this.path = this.path.substring(BUILD_PATH.length);
-    if (yield send(this, this.path, { root: path.join(__dirname, '../../', BUILD_PATH) })) return;
-  }
-  yield* next;
-}
-
-/**
  * Set our routes.
  */
 
-app.use(route.get('/', index));
 app.use(route.get('/api/clusters', list));
 app.use(route.get('/api/clusters/:cluster', services));
 app.use(route.get('/api/clusters/:cluster/task/:task', task));
+
+/**
+ * App routes.
+ */
+
+app.use(serve('./build'));
 
 /**
  * Render the index page
