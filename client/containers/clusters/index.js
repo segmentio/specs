@@ -140,25 +140,30 @@ export default class ClustersContainer extends Component {
       const { clusters } = res.body;
       this.setState({ clusters });
 
-      const batch = new Batch;
-      clusters.forEach(function(cluster) {
-        batch.push(function(done) {
-          request
-          .get(`/api/clusters/${cluster.clusterName}`)
-          .end(function(err, res) {
-            if (err) return done(err);
-            done(null, res.body);
-          });
-        });
+      for (let i = 0; i < clusters.length; i++) {
+        this.fetchServices(clusters[i]);
+      }
+    }.bind(this));
+  }
+
+  /**
+   * Fetch services for the given `cluster`.
+   */
+
+  fetchServices(cluster) {
+    request
+    .get(`/api/clusters/${cluster.clusterName}`)
+    .end(function(err, res) {
+      if (err) {
+        err = err || new Error(`unable to fetch information on ${cluster.clusterName} (${res.status})`);
+        return this.setState({ error: err.message });
+      }
+
+      const { services } = this.state;
+      services.push(res.body);
+      this.setState({
+        services: flatten(services)
       });
-
-      batch.end(function(err, res) {
-        if (err) {
-          return this.setState({ error: err.message });
-        }
-
-        this.setState({ services: flatten(res) });
-      }.bind(this));
-    }.bind(this))
+    }.bind(this));
   }
 };
