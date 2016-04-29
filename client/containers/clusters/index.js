@@ -4,11 +4,11 @@ import request from 'superagent';
 import Batch from 'batch';
 import flatten from 'flatten';
 import Loader from 'react-loader';
+import Page from '../../components/page';
 import ErrorMessage from '../../components/error-message';
 import Sidebar from '../../components/sidebar';
 import ServiceList from '../../components/service-list';
 import Service from '../service';
-import styles from './index.css';
 
 export default class ClustersContainer extends Component {
   constructor(props, context) {
@@ -30,29 +30,23 @@ export default class ClustersContainer extends Component {
     const activeClusterArn = this.getActiveClusterArn();
     const isLoading = !!this.state.error || !!this.state.services.length;
     return (
-      <div className={styles.ClustersContainer}>
-        <header>
-          <h1>specs</h1>
-          <p>peer into your ecs clusters</p>
-        </header>
-        <div className={styles.ClustersContainerContent}>
-          <Sidebar
-            clusters={this.state.clusters}
-            activeClusterArn={activeClusterArn}
-            searchTerm={this.state.searchTerm}
-            setSearchTerm={::this.setSearchTerm}
-            selectCluster={::this.setActiveCluster} />
-          <Loader loaded={isLoading} color="#3cc76a">
-            {this.renderError()}
-            <ServiceList
-              services={this.state.services}
-              searchTerm={this.state.searchTerm}
-              activeClusterArn={activeClusterArn} />
-          </Loader>
-        </div>
+      <Page>
+        <Sidebar
+          clusters={this.state.clusters}
+          activeClusterArn={activeClusterArn}
+          searchTerm={this.state.searchTerm}
+          setSearchTerm={::this.setSearchTerm}
+          selectCluster={::this.setActiveCluster} />
 
+        <Loader loaded={isLoading} color="#3cc76a">
+          {this.renderError()}
+          <ServiceList
+            services={this.state.services}
+            searchTerm={this.state.searchTerm}
+            activeClusterArn={activeClusterArn} />
+        </Loader>
         {this.renderServiceSheet()}
-      </div>
+      </Page>
     )
   }
 

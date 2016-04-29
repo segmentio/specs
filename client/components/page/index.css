@@ -1,0 +1,10 @@
+
+.Page {}
+.Page h1 {
+  margin: 0;
+  padding: 0;
+}
+
+.PageContent {
+  display: flex;
+}
