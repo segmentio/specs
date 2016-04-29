@@ -4,6 +4,7 @@
 let logger = require('koa-logger');
 let route = require('koa-route');
 let send = require('koa-send');
+let Cache = require('./cache');
 let AWS = require('aws-sdk');
 let cors = require('kcors');
 let path = require('path');
@@ -16,6 +17,14 @@ let serve = require('koa-static');
  */
 
 let app = koa();
+let ecs = new ECS(AWS);
+let cache = new Cache(ecs);
+
+/**
+ * Set a cache error handler
+ */
+
+cache.on('error', err => console.log('cache error:', err.stack));
 
 /**
  * Export the app
@@ -52,7 +61,8 @@ app.use(cors());
  */
 
 app.use(function *(next){
-  this.state.ecs = new ECS(AWS);
+  this.cache = cache;
+  this.ecs = ecs;
   yield next;
 });
 
@@ -92,8 +102,8 @@ function *bundle(){
  */
 
 function *list(){
-  let ecs = this.state.ecs;
-  let clusters = yield ecs.clusters();
+  let cache = this.cache;
+  let clusters = cache.clusters();
   this.body = clusters;
 }
 
@@ -105,19 +115,8 @@ function *list(){
  */
 
 function *services(cluster){
-  let ecs = this.state.ecs;
-  let services = yield ecs.services(cluster);
-
-  let taskCalls = services.map((service) => {
-    return ecs.task(service.taskDefinition);
-  });
-
-  let tasks = yield Promise.all(taskCalls);
-  services.forEach((service, i) => {
-    service.task = tasks[i].taskDefinition;
-  });
-
-  this.body = services;
+  let cache = this.cache;
+  this.body = cache.services(cluster);
 }
 
 /**

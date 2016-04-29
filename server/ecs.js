@@ -1,9 +1,11 @@
 
 'use strict'
 
+let debug = require('debug')('ecs');
 let Promise = require('bluebird');
 let chunk = require('chunk');
 let Batch = require('batch');
+let co = require('co');
 
 module.exports = ECS;
 
@@ -25,7 +27,8 @@ function ECS(aws){
  * @return {Promise} [clusters]
  */
 
-ECS.prototype.clusters = function *(){
+ECS.prototype.clusters = function(){
+  debug('ecs.clusters()');
   return this.listClusters()
     .bind(this)
     .then(this.describeClusters);
@@ -40,11 +43,12 @@ ECS.prototype.clusters = function *(){
  * @return {Promise} [services]
  */
 
-ECS.prototype.services = function *(cluster){
+ECS.prototype.services = function(cluster){
+  debug('ecs.services(%s)', cluster);
   return this.listServices(cluster)
     .bind(this)
     .then(this.describeServices);
-}
+};
 
 /**
  * Lists all the clusters from the API.
@@ -52,10 +56,12 @@ ECS.prototype.services = function *(cluster){
  * @private
  */
 
-ECS.prototype.listClusters = function (){
+ECS.prototype.listClusters = function(){
   let ecs = this.ecs;
+  debug('ecs.listClusters()');
   return new Promise((resolve, reject) => {
     ecs.listClusters((err, data) => {
+      debug('ecs.listClusters received reponse', err, data);
       if (err) return reject(err);
       resolve(data.clusterArns);
     });
@@ -70,8 +76,9 @@ ECS.prototype.listClusters = function (){
  * @return {Promise}
  */
 
-ECS.prototype.describeClusters = function (clusters){
+ECS.prototype.describeClusters = function(clusters){
   let ecs = this.ecs;
+  debug('ecs.describeClusters()'); 
   return new Promise((resolve, reject) => {
     ecs.describeClusters({ clusters: clusters }, (err, data) => {
       if (err) return reject(err);
@@ -87,8 +94,9 @@ ECS.prototype.describeClusters = function (clusters){
  * @param {String} cluster
  */
 
-ECS.prototype.listServices = function (cluster){
+ECS.prototype.listServices = function(cluster){
   let ecs = this.ecs;
+  debug('ecs.listServices()'); 
   return new Promise((resolve, reject) => {
     let services = [];
     list(cluster, null, (err, services) => {
@@ -109,7 +117,7 @@ ECS.prototype.listServices = function (cluster){
 }
 
 /**
- * Describe individual services, passed from the promis resolved
+ * Describe individual services, passed from the promise resolved
  * from listServices
  *
  * @private
@@ -118,6 +126,7 @@ ECS.prototype.listServices = function (cluster){
 
 ECS.prototype.describeServices = function ([cluster, services]){
   let ecs = this.ecs;
+  debug('ecs.describeServices called'); 
   return new Promise((resolve, reject) => {
     let chunks = chunk(services, 10);
     let batch = new Batch();
