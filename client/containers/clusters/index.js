@@ -97,6 +97,7 @@ export default class ClustersContainer extends Component {
     const serviceName = this.props.params.serviceName;
     if (!serviceName) return null;
     const service = this.getByName('service', serviceName);
+    if (!service) return null;
     // TODO: if no matching service is found, show an error
     return <Service service={service} />
   }
