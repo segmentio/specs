@@ -3,8 +3,9 @@ FROM node:5
 COPY . /src
 WORKDIR /src
 
-RUN npm install --production
+RUN npm install
 RUN make build
+RUN npm prune --production
 
 VOLUME /src
 
