@@ -143,7 +143,7 @@ export default class ClustersContainer extends Component {
         return this.setState({ error: err.message });
       }
 
-      const { clusters } = res.body;
+      const clusters = res.body;
       this.setState({ clusters });
 
       const batch = new Batch;
