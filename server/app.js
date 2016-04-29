@@ -21,6 +21,12 @@ let ecs = new ECS(AWS);
 let cache = new Cache(ecs);
 
 /**
+ * Set a cache error handler
+ */
+
+cache.on('error', err => console.log('cache error:', err.stack));
+
+/**
  * Export the app
  */
 

@@ -1,16 +1,28 @@
 'use strict'
 
 let debug = require('debug')('ecs:cache');
+let inherits = require('util').inherits;
 let defer = require('co-defer');
+let Emitter = require('events');
 let co = require('co');
 let ms = require('ms');
 
 module.exports = Cache;
 
+/**
+ * Cache constructor
+ *
+ * @param {ECS} ecs  ecs client
+ */
+
 function Cache(ecs){
+  Emitter.call(this);
   this.ecs = ecs;
+  this.cache([], []); // initial state
   this.start();
 }
+
+inherits(Cache, Emitter);
 
 /**
  * Starts our cache polling for
@@ -19,10 +31,18 @@ function Cache(ecs){
 
 Cache.prototype.start = function(){
   let poll = this.poll.bind(this);
-  defer(poll);
+  defer(poll, err => {
+    if (err) this.emit('error', err);
+  });
+
+  let self = this;
   defer.setInterval(function *(){
-    yield poll();
-  }, ms('45s'));
+    try { 
+      yield poll();
+    } catch (err) {
+      self.emit('error', err);
+    }
+  }, ms('1m'));
 };
 
 /**
@@ -45,12 +65,13 @@ Cache.prototype.poll = function *(){
   })
   let services = yield Promise.all(serviceCalls);
   services = flatten(services);
+  debug('received %d services', services.length);
 
   // from all the tasks, get the versions running
   let taskCalls = services.map(service => ecs.task(service.taskDefinition));
   let tasks = yield Promise.all(taskCalls);
   services.forEach((service, i) => service.task = tasks[i].taskDefinition);
-  debug('received %d services', services.length);
+  debug('received %d tasks', services.length);
   this.cache(clusters, services);
 };
 
