@@ -79,6 +79,7 @@ app.use(route.get('/api/clusters/:cluster/task/:task', task));
  */
 
 app.use(route.get('/bundle.js', bundle));
+app.use(route.get('/bundle.js.map', sourcemap));
 app.use(route.get('/*', index));
 
 /**
@@ -95,6 +96,14 @@ function *index(){
 
 function *bundle(){
   yield send(this, 'build/bundle.js');
+}
+
+/**
+ * Transfer the bundle sourcemap.
+ */
+
+function *sourcemap(){
+  yield send(this, 'build/bundle.js.map');
 }
 
 /**
