@@ -10,49 +10,27 @@ export default class ClusterList extends Component {
       <div className={styles.ClusterList}>
         <h2>clusters</h2>
         <ul>
-          {this.renderAllItem()}
-          {this.props.clusters.map(::this.renderClusterItem)}
+          {this.renderItem(null)}
+          {this.props.clusters.map(::this.renderItem)}
         </ul>
       </div>
     );
   }
 
-  renderAllItem() {
-    const isActive = !this.props.activeClusterArn;
+  renderItem(item) {
+    const isActive = item
+      ? item.clusterArn === this.props.activeClusterArn
+      : !this.props.activeClusterArn;
     const classes = classname({
       [styles.ClusterListItem]: true,
       [styles['ClusterListItem--is-active']]: isActive,
     });
     return (
-      <li key="all_clusters" className={classes}>
-        <Link to="/">
-          all
+      <li key={item ? item.clusterArn : 'all_clusters'} className={classes}>
+        <Link to={item ? `/${item.clusterName}` : '/'}>
+          {item ? item.clusterName : 'all'}
         </Link>
       </li>
     );
-
-    function handleClick() {
-      this.props.onClick(null);
-    }
-  }
-
-  renderClusterItem(cluster) {
-    const isActive = cluster.clusterArn === this.props.activeClusterArn;
-    const classes = classname({
-      [styles.ClusterListItem]: true,
-      [styles['ClusterListItem--is-active']]: isActive,
-    });
-
-    return (
-      <li key={cluster.clusterArn} className={classes}>
-        <Link to={`/${cluster.clusterName}`}>
-          {cluster.clusterName}
-        </Link>
-      </li>
-    );
-
-    function handleClick() {
-      this.props.onClick(cluster);
-    }
   }
 };
