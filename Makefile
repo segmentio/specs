@@ -1,7 +1,7 @@
 
 .DEFAULT_GOAL := node_modules
 
-WEBPACK_FLAGS ?= -d
+WEBPACK_FLAGS ?= -p
 
 server: node_modules
 	node_modules/.bin/nodemon --harmony \
@@ -10,14 +10,11 @@ server: node_modules
 		bin/server
 
 dev-server: node_modules
-	node_modules/.bin/webpack-dev-server \
-		-d \
-		--hot \
-		--inline \
-		--port 3001
+	node_modules/.bin/webpack-dev-server -d --hot --inline --port 3001
 
 build: node_modules
-	node_modules/.bin/webpack $(WEBPACK_FLAGS)
+	NODE_ENV=production node_modules/.bin/webpack $(WEBPACK_FLAGS)
+	cp client/index.html build/index.html
 
 docker:
 	docker build -t segment/specs .
@@ -33,4 +30,4 @@ clean:
 distclean: clean
 	rm -rf node_modules
 
-.PHONY: clean distclean server dev-server
+.PHONY: clean distclean build server dev-server
