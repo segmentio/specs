@@ -1,10 +1,14 @@
 
 'use strict';
 
-const HMRPlugin = require('webpack').HotModuleReplacementPlugin;
+const webpack = require('webpack');
+const HMRPlugin = webpack.HotModuleReplacementPlugin;
+const DefinePlugin = webpack.DefinePlugin;
 const path = require('path');
 
-module.exports = {
+const env = process.env.NODE_ENV || 'development';
+
+const config = module.exports = {
   context: path.join(__dirname, 'client'),
   devtool: 'source-map',
   entry: {
@@ -15,6 +19,13 @@ module.exports = {
     path: './build',
     filename: 'bundle.js',
   },
+  plugins: [
+    new DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(env)
+      }
+    })
+  ],
   module: {
     loaders: [
       {
@@ -58,4 +69,9 @@ module.exports = {
       }
     }
   }
+}
+
+// hack
+if (env == 'production') {
+  delete config.entry.html
 }
