@@ -20,8 +20,6 @@
 
 .ClusterListItem {
   align-items: center;
-  display: flex;
-  justify-content: space-between;
   line-height: 29px;
   margin-bottom: 5px;
   position: relative;
@@ -34,6 +32,7 @@
 }
 
 .ClusterListItem a {
+  display: block;
   padding-left: 10px;
   padding-right: 10px;
   border-radius: 4px;
@@ -43,7 +42,6 @@
   font-size: 16px;
   font-weight: 400;
   color: #707479;
-  width: 100%;
   height: 100%;
 }
 

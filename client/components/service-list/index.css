@@ -1,10 +1,9 @@
 
 .ServiceList {
   list-style: none;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  float: right;
   margin: -5px;
+  width: 950px;
 }
 
 .ServiceListItem {
