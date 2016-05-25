@@ -37,7 +37,7 @@ export default class ServiceEventList extends Component {
   renderEvent({ id, createdAt, message }) {
     const timestamp = moment(createdAt).fromNow();
     return (
-      <li key={event.id} className={styles.ServiceEventListItem}>
+      <li key={id} className={styles.ServiceEventListItem}>
         <span className={styles['ServiceEventListItem-message']}>
           {message}
         </span>
