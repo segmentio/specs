@@ -14,6 +14,14 @@ export default class Sheet extends Component {
     );
   }
 
+  componentDidMount() {
+    document.body.classList.add(styles.NotScrollable)
+  }
+
+  componentWillUnmount() {
+    document.body.classList.remove(styles.NotScrollable)
+  }
+
   /**
    * Close.
    */

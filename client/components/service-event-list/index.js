@@ -9,7 +9,6 @@ export default class ServiceEventList extends Component {
     const events = this.filterEvents();
     return (
       <div className={styles.ServiceEventList}>
-        <h2>Events</h2>
         <ul>
           {events.map(::this.renderEvent)}
         </ul>
