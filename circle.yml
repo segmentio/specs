@@ -1,0 +1,28 @@
+
+machine:
+  node:
+    version: 5
+  services:
+    - docker
+  environment:
+    PRODUCTION_CLUSTER: default
+
+dependencies:
+  cache_directories:
+    - node_modules
+  pre:
+    - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  override:
+    - make node_modules
+
+test:
+  override:
+    - echo todo
+
+deployment:
+  # deploy to dockerhub
+  dockerhub:
+    branch: master
+    commands:
+      - docker build -t segment/specs .
+      - docker push segment/specs:latest
