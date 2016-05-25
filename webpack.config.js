@@ -4,6 +4,7 @@
 const webpack = require('webpack');
 const HMRPlugin = webpack.HotModuleReplacementPlugin;
 const DefinePlugin = webpack.DefinePlugin;
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const path = require('path');
 
 const env = process.env.NODE_ENV || 'development';
@@ -43,11 +44,11 @@ const config = module.exports = {
       {
         test: /\.css$/,
         include: /client/,
-        loaders: [
-          'style',
-          'css?modules&sourceMap&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
-          'postcss'
-        ]
+        loader: env === 'production'
+          ? ExtractTextPlugin.extract('style-loader', 'css-loader?module!postcss-loader', {
+              publicPath: '/'
+            })
+          : 'style!css?module&localIdentName=[path][name]---[local]---[hash:base64:5]!postcss'
       },
       {
         test: /\.css$/,
@@ -71,7 +72,7 @@ const config = module.exports = {
   }
 }
 
-// hack
 if (env == 'production') {
   delete config.entry.html
+  config.plugins.push(new ExtractTextPlugin('bundle.css'))
 }

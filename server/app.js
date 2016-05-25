@@ -80,6 +80,8 @@ app.use(route.get('/api/clusters/:cluster/task/:task', task));
 
 app.use(route.get('/bundle.js', bundle));
 app.use(route.get('/bundle.js.map', sourcemap));
+app.use(route.get('/bundle.css', stylesheet));
+app.use(route.get('/bundle.css.map', stylesheetMap));
 app.use(route.get('/*', index));
 
 /**
@@ -104,6 +106,22 @@ function *bundle(){
 
 function *sourcemap(){
   yield send(this, 'build/bundle.js.map');
+}
+
+/**
+ * Transfer stylesheet
+ */
+
+function *stylesheet(){
+  yield send(this, 'build/bundle.css');
+}
+
+/**
+ * Transfer stylesheet sourcemap
+ */
+
+function *stylesheetMap(){
+  yield send(this, 'build/bundle.css.map');
 }
 
 /**
