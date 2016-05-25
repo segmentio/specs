@@ -7,6 +7,7 @@ server: node_modules
 	node_modules/.bin/nodemon --harmony \
 		--harmony_destructuring \
 		--ignore client \
+		--ignore build \
 		bin/server
 
 dev-server: node_modules
