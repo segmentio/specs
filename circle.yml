@@ -4,8 +4,6 @@ machine:
     version: 5
   services:
     - docker
-  environment:
-    PRODUCTION_CLUSTER: default
 
 dependencies:
   cache_directories:
