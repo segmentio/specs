@@ -8,7 +8,7 @@ Specs is a high level dashboard for viewing your [ECS][ecs] clusters. Specs can 
   - the tagged docker image running
   - the most recent events of a service
 
-![](http://i.imgur.com/4QUvXTr.png)
+![](https://segment.com/blog/releasing-specs/images/specs-events.png)
 
 We built Specs to work around the sluggishness of the internal AWS dashboard. It allows for quick searching, and doesn't require paging through results. And if you run it internally, your teammates won't need any separate IAM users or permissions.
 
