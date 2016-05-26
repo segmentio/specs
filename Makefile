@@ -17,10 +17,6 @@ build: node_modules
 	NODE_ENV=production node_modules/.bin/webpack $(WEBPACK_FLAGS)
 	cp client/index.html build/index.html
 
-docker:
-	docker build -t segment/specs .
-	docker push segment/specs:latest
-
 node_modules: package.json
 	npm install
 	touch $@

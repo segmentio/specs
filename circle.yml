@@ -1,0 +1,25 @@
+
+machine:
+  node:
+    version: 5
+  services:
+    - docker
+
+dependencies:
+  cache_directories:
+    - node_modules
+  override:
+    - make node_modules
+
+test:
+  override:
+    - echo todo
+
+deployment:
+  # deploy to dockerhub
+  dockerhub:
+    branch: master
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker build -t segment/specs .
+      - docker push segment/specs:latest
