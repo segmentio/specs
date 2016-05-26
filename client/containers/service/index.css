@@ -1,2 +1,49 @@
 
 .Service {}
+
+.ServiceTabs {
+  margin-top: 40px;
+}
+
+.ServiceTabs-navigation {
+}
+.ServiceTabs-navigation ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ServiceTabs-navigation li {
+  display: inline-block;
+  padding-right: 10px;
+}
+
+.ServiceTabs-navigation a {
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: lowercase;
+  line-height: 1;
+  color: #b7bdc4;
+}
+
+/* hack */
+.ServiceTabs-navigation a > div {
+  display: inline;
+  border-radius: 5px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+
+  padding-top: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 2px; /* where is this coming from? wtf */
+  border: 1px solid #BDC0C5;
+  background: #fff;
+}
+
+.ServiceTabs-content {
+  background: #fff;
+  border: 1px solid #BDC0C5;
+  border-top-right-radius: 5px;
+  padding-top: 15px;
+  padding-left: 15px;
+}

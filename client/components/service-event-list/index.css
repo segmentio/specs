@@ -1,16 +1,14 @@
 
-.ServiceEventList h2 {
-  margin-bottom: 5px;
-}
-
 .ServiceEventList ul {
   margin: 0;
 }
 .ServiceEventListItem {}
+
 .ServiceEventListItem-message {
   color: #54585E;
   font-size: 16px;
 }
+
 .ServiceEventListItem-timestamp {
   padding-left: 10px;
   font-size: 16px;
