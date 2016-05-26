@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import classname from 'classname';
 import moment from 'moment';
+import qs from 'querystring';
 import { Link, browserHistory } from 'react-router';
 import { Tabs, TabLink, TabContent } from 'react-tabs-redux';
 import Sheet from '../../components/sheet';
@@ -17,22 +18,31 @@ const activeLinkStyle = {
 };
 
 export default class Service extends Component {
+  constructor() {
+    super()
+    const hash = window.location.hash.slice(1)
+    const map = qs.decode(hash)
+    this.state = {
+      tab: map.tab
+    }
+  }
+
   render() {
     return (
       <div className={styles.Service}>
         <Sheet onClose={::this.closeSheet}>
           <h1 tabIndex="-1" ref="heading">{this.props.service.serviceName}</h1>
           <ServiceStats service={this.props.service} left={true} />
-          <Tabs className={styles.ServiceTabs} activeLinkStyle={activeLinkStyle}>
+          <Tabs handleSelect={::this.selectTab} selectedTab={this.state.tab} className={styles.ServiceTabs} activeLinkStyle={activeLinkStyle}>
             <nav className={styles['ServiceTabs-navigation']}>
               <ul>
                 <li>
-                  <a href="#" onClick={e => e.preventDefault()}>
+                  <a href="#tab=task_def">
                     <TabLink to="task_def">Task Def</TabLink>
                   </a>
                 </li>
                 <li>
-                  <a href="#" onClick={e => e.preventDefault()}>
+                  <a href="#tab=events">
                     <TabLink to="events">Events</TabLink>
                   </a>
                 </li>
@@ -54,6 +64,14 @@ export default class Service extends Component {
         </Sheet>
       </div>
     );
+  }
+
+  /**
+   * Select the given `tab`.
+   */
+
+  selectTab(tab) {
+    this.setState({ tab: tab })
   }
 
   /**
