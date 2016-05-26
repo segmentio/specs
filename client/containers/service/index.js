@@ -13,8 +13,8 @@ import ServiceTaskDef from '../../components/service-task-def';
 import styles from './index.css';
 
 const activeLinkStyle = {
-  'border-bottom-color': '#fff',
-  'color': '#54585E',
+  borderBottomColor: '#fff',
+  color: '#54585E',
 };
 
 export default class Service extends Component {
