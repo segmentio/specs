@@ -7,6 +7,7 @@ import styles from './index.css';
 export default class ServiceTaskDef extends Component {
   render() {
     const { family, revision, definition } = this.props;
+    const command = definition.command ? definition.command.join(' ') : null;
     return (
       <div className={styles.ServiceTaskDef}>
         <table>
@@ -26,7 +27,7 @@ export default class ServiceTaskDef extends Component {
             <tr>
               <th>command</th>
               <td>
-                <code>{definition.command.join(' ')}</code>
+                <code>{command}</code>
               </td>
             </tr>
             <tr>
