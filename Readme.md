@@ -1,7 +1,9 @@
 
 # Specs
 
-Specs is a high level dashboard for viewing your [ECS][ecs] clusters. Specs can quickly show you:
+Specs is a high level dashboard for viewing your [ECS][ecs] clusters. For a more complete description, [see the blog post][blog].
+
+Specs can quickly show you:
 
   - the services a given cluster is running
   - the desired count of a given service
@@ -63,6 +65,7 @@ Now visit [http://localhost:3001/](http://localhost:3001/) =)
 
 [ecs]: https://aws.amazon.com/ecs/
 [node]: https://nodejs.org/en/
+[blog]: https://segment.com/blog/releasing-specs/
 
 ## License
 
