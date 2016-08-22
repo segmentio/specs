@@ -1,13 +1,13 @@
-FROM node:6
+FROM segment/shifu-node:latest
 
 COPY . /src
+
 WORKDIR /src
 
-RUN npm install
-RUN make build
-RUN npm prune --production
+RUN make build && npm prune --production
 
 VOLUME /src
 
 EXPOSE 3000
-CMD ["node", "--harmony", "/src/bin/server"]
+
+CMD ["/src/bin/server"]
