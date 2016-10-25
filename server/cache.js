@@ -21,7 +21,7 @@ function Cache(ecs){
   this.tasks = LRU({
     max: 1000000,
     maxAge: ms('1d'),
-    length: (val, key) => { val.length }
+    length: (val, key) => 1
   });
   this.ecs = ecs;
   this.cache([], []); // initial state
