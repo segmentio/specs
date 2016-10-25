@@ -78,7 +78,7 @@ Cache.prototype.poll = function *(){
   let taskCalls = services.map(service => {
     let task = taskCache.get(service.taskDefinition);
     if (task) {
-      return new Promise((resolve, reject) => { resolve(task) });
+      return Promise.resolve(task);
     }
     return ecs.task(service.taskDefinition).then(task => {
       taskCache.set(service.taskDefinition, task);
