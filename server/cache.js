@@ -1,5 +1,6 @@
 'use strict'
 
+let LRU = require('lru-cache');
 let debug = require('debug')('ecs:cache');
 let inherits = require('util').inherits;
 let defer = require('co-defer');
@@ -17,6 +18,10 @@ module.exports = Cache;
 
 function Cache(ecs){
   Emitter.call(this);
+  this.tasks = LRU({
+    max: 10000,
+    length: (val, key) => { val.length }
+  });
   this.ecs = ecs;
   this.cache([], []); // initial state
   this.start();
@@ -37,7 +42,7 @@ Cache.prototype.start = function(){
 
   let self = this;
   defer.setInterval(function *(){
-    try { 
+    try {
       yield poll();
     } catch (err) {
       self.emit('error', err);
@@ -53,7 +58,7 @@ Cache.prototype.start = function(){
 Cache.prototype.poll = function *(){
   debug('polling ecs...');
   let ecs = this.ecs;
-  
+
   // retrieve the cluster definitions
   let clusters = yield ecs.clusters();
   clusters = clusters.clusters;
@@ -67,8 +72,18 @@ Cache.prototype.poll = function *(){
   services = flatten(services);
   debug('received %d services', services.length);
 
-  // from all the tasks, get the versions running
-  let taskCalls = services.map(service => ecs.task(service.taskDefinition));
+  // from all the tasks, get the versions running, then cache the result.
+  let taskCache = this.tasks;
+  let taskCalls = services.map(service => {
+    let task = taskCache.get(service.taskDefinition);
+    if (task) {
+      return new Promise((resolve, reject) => { resolve(task) });
+    }
+    return ecs.task(service.taskDefinition).resolve(task => {
+      taskCache.set(service.taskDefinition, task);
+      return task;
+    });
+  });
   let tasks = yield Promise.all(taskCalls);
   services.forEach((service, i) => service.task = tasks[i].taskDefinition);
   debug('received %d tasks', services.length);
