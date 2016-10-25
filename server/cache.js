@@ -19,7 +19,8 @@ module.exports = Cache;
 function Cache(ecs){
   Emitter.call(this);
   this.tasks = LRU({
-    max: 10000,
+    max: 1000000,
+    maxAge: ms('1d'),
     length: (val, key) => { val.length }
   });
   this.ecs = ecs;
