@@ -80,7 +80,7 @@ Cache.prototype.poll = function *(){
     if (task) {
       return new Promise((resolve, reject) => { resolve(task) });
     }
-    return ecs.task(service.taskDefinition).resolve(task => {
+    return ecs.task(service.taskDefinition).then(task => {
       taskCache.set(service.taskDefinition, task);
       return task;
     });
