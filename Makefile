@@ -14,7 +14,6 @@ dev-server: node_modules
 
 build: node_modules
 	NODE_ENV=production node_modules/.bin/webpack $(WEBPACK_FLAGS)
-	cp client/index.html build/index.html
 
 node_modules: package.json
 	npm install

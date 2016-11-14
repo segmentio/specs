@@ -44,6 +44,7 @@
     "file-loader": "^0.8.5",
     "flatten": "^1.0.2",
     "history": "^1.17.0",
+    "html-webpack-plugin": "^2.24.1",
     "keyname": "^0.1.0",
     "moment": "^2.10.6",
     "nodemon": "^1.8.1",
