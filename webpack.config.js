@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const HMRPlugin = webpack.HotModuleReplacementPlugin;
 const DefinePlugin = webpack.DefinePlugin;
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path');
 
 const env = process.env.NODE_ENV || 'development';
@@ -13,11 +14,11 @@ const config = module.exports = {
   context: path.join(__dirname, 'client'),
   devtool: 'source-map',
   entry: {
-    js: './index.js',
-    html: './index.html',
+    main: './index.js',
   },
   output: {
     path: './build',
+    publicPath: '/',
     filename: 'bundle.js',
   },
   plugins: [
@@ -25,14 +26,14 @@ const config = module.exports = {
       'process.env': {
         NODE_ENV: JSON.stringify(env)
       }
+    }),
+    new HtmlWebpackPlugin({
+      template: 'index.html',
+      inject: 'body'
     })
   ],
   module: {
     loaders: [
-      {
-        test: /\.html$/,
-        loader: 'file?name=[name].[ext]'
-      },
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -73,6 +74,5 @@ const config = module.exports = {
 }
 
 if (env == 'production') {
-  delete config.entry.html
   config.plugins.push(new ExtractTextPlugin('bundle.css'))
 }
