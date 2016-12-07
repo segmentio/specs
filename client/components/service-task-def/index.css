@@ -28,3 +28,7 @@
   width: 380px;
   overflow: auto;
 }
+
+.ServiceTaskDefEnvVars li {
+  white-space: nowrap;
+}
