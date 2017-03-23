@@ -1,4 +1,3 @@
-
 machine:
   node:
     version: 6
@@ -13,13 +12,4 @@ dependencies:
 
 test:
   override:
-    - echo todo
-
-deployment:
-  # deploy to dockerhub
-  dockerhub:
-    branch: master
-    commands:
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker build -t segment/specs .
-      - docker push segment/specs:latest
+    - make build
