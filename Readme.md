@@ -10,7 +10,7 @@ Specs can quickly show you:
   - the tagged docker image running
   - the most recent events of a service
 
-![](https://segment.com/blog/releasing-specs/images/specs-events.png)
+![](https://assets.contents.io/asset_y6nF1vpx.png)
 
 We built Specs to work around the sluggishness of the internal AWS dashboard. It allows for quick searching, and doesn't require paging through results. And if you run it internally, your teammates won't need any separate IAM users or permissions.
 
