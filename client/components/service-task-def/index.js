@@ -14,7 +14,7 @@ export default class ServiceTaskDef extends Component {
           <tbody>
             <tr>
               <th>task def</th>
-              <td>{family}:{revision}</td>
+              <td><a href={"https://us-west-2.console.aws.amazon.com/ecs/home?region=us-west-2#/taskDefinitions/"+family+"/"+revision}>{family}:{revision}</a></td>
             </tr>
             <tr>
               <th>CPU</th>
