@@ -5,6 +5,7 @@
 .App {
   width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
   font: 20px Freight Sans,Verdana,Geneva,sans-serif;
 }
 
