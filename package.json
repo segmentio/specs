@@ -8,7 +8,10 @@
     "url": "github.com/segmentio/specs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "nodemon --harmony --ignore client --ignore build bin/server",
+    "client": "webpack-dev-server -d --hot --inline --port 3001",
+    "dev": "concurrently --kill-others \"npm run server\" \"npm run client\"",
+    "build": "webpack -p"
   },
   "author": "",
   "license": "ISC",
@@ -39,6 +42,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "babel-runtime": "^6.6.1",
     "classname": "0.0.0",
+    "concurrently": "^3.5.0",
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
