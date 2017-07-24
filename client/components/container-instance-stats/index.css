@@ -1,0 +1,30 @@
+
+.ContainerInstanceStats {}
+
+.ContainerInstanceStats table {
+  font-size: 16px;
+  color: #54585E;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.ContainerInstanceStats th {
+  text-align: right;
+  font-weight: 500;
+  width: 38%;
+}
+
+.ContainerInstanceStats td {
+  text-align: left;
+  padding-left: 7px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ContainerInstanceStatsInfo {
+  color: #54585E;
+  font-size: 14px;
+  font-weight: italic;
+  margin-bottom: 5px;
+}

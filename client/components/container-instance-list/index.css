@@ -1,13 +1,22 @@
 
-.ServiceList {
-  list-style: none;
+
+.ContainerListWrapper {
   float: right;
   margin: -5px;
   width: 950px;
-  padding-bottom: 25px;
+  padding-bottom: 100px;
 }
 
-.ServiceListItem {
+.ContainerListWrapper h2 {
+  margin-bottom: .3em;
+}
+
+.ContainerList {
+  list-style: none;
+  padding: 0;
+}
+
+.ContainerListItem {
   display: inline-block;
   width: 216px;
   height: 193px;
@@ -16,13 +25,12 @@
   margin: 5px;
 }
 
-
-.ServiceListItem a {
+.ContainerListItem > div  {
   height: 100%;
   width: 100%;
   display: block;
-  padding-top: 25px;
-  padding-bottom: 25px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   padding-left: 5px;
   padding-right: 5px;
   text-align: center;
@@ -36,23 +44,18 @@
   transform: translateZ(0);
 }
 
-.ServiceListItem a:focus,
-.ServiceListItem a:hover {
-  border-color: #3cc76a;
-}
-
-.ServiceListItem h3 {
+.ContainerListItem h3 {
   margin: 0;
   padding: 0;
-  font-size: 24px;
-  margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 0px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-
-.ServiceListItem p {
+.ContainerListItem p {
   margin: 0;
   padding: 0;
   text-transform: capitalize;

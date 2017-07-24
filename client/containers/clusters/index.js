@@ -2,13 +2,13 @@
 import React, { Component } from 'react';
 import request from 'superagent';
 import Batch from 'batch';
-import flatten from 'flatten';
 import Loader from 'react-loader';
 import Page from '../../components/page';
 import ErrorMessage from '../../components/error-message';
 import Sidebar from '../../components/sidebar';
 import ServiceList from '../../components/service-list';
 import Service from '../service';
+import ContainerInstanceList from '../../components/container-instance-list';
 
 export default class ClustersContainer extends Component {
   constructor(props, context) {
@@ -17,6 +17,7 @@ export default class ClustersContainer extends Component {
       error: null,
       clusters: [],
       services: [],
+      containerInstances: [],
       activeClusterArn: null,
       activeServiceArn: null
     };
@@ -44,6 +45,10 @@ export default class ClustersContainer extends Component {
             services={this.state.services}
             searchTerm={this.state.searchTerm}
             activeClusterArn={activeClusterArn} />
+          <ContainerInstanceList
+            containerInstances={this.state.containerInstances}
+            activeClusterArn={activeClusterArn}
+          />
         </Loader>
         {this.renderServiceSheet()}
       </Page>
@@ -134,6 +139,22 @@ export default class ClustersContainer extends Component {
   }
 
   /**
+   * Get container instance by its `clusterName` and `containerInstanceArn`.
+   */
+
+  findContainerInstance(clusterName, containerInstanceArn) {
+    const cluster = this.findCluster(clusterName);
+    if (!cluster) {
+      return;
+    }
+
+    return this.state.containerInstances.find((ci) => {
+      return ci.clusterArn === cluster.clusterArn &&
+        ci.containerInstanceArn === containerInstanceArn;
+    });
+  }
+
+  /**
    * Fetch data.
    */
 
@@ -167,10 +188,10 @@ export default class ClustersContainer extends Component {
         return this.setState({ error: err.message });
       }
 
-      const { services } = this.state;
-      services.push(res.body);
+      const { services, containerInstances } = this.state;
       this.setState({
-        services: flatten(services)
+        services: services.concat(res.body.services),
+        containerInstances: containerInstances.concat(res.body.containerInstances),
       });
     }.bind(this));
   }

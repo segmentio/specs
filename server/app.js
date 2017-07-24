@@ -137,8 +137,8 @@ function *list(){
 }
 
 /**
- * Returns a json array of a given cluster in
- * the path parameter.
+ * Returns a json array of services and container 
+ * instances for a given cluster in the path parameter.
  *
  * @param {String} cluster
  */
@@ -152,8 +152,8 @@ function *servicesAndContainerInstances(cluster){
 }
 
 /**
- * Returns a json array of a given cluster in
- * the path parameter.
+ * Returns a json array of services for a given cluster
+ * in the path parameter.
  *
  * @param {String} cluster
  */
@@ -164,8 +164,8 @@ function *services(cluster){
 }
 
 /**
- * Returns a json array of a given cluster in
- * the path parameter.
+ * Returns a json array of container instances for 
+ * a given cluster in the path parameter.
  *
  * @param {String} cluster
  */
