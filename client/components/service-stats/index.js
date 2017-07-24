@@ -20,7 +20,7 @@ export default class ServiceStats extends Component {
           <tbody>
             <tr>
               <th>Image</th>
-              <td>{image}</td>
+              <td title={image}>{image}</td>
             </tr>
             <tr>
               <th>Running</th>
