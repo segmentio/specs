@@ -71,7 +71,9 @@ app.use(function *(next){
  */
 
 app.use(route.get('/api/clusters', list));
-app.use(route.get('/api/clusters/:cluster', services));
+app.use(route.get('/api/clusters/:cluster', servicesAndContainerInstances));
+app.use(route.get('/api/clusters/:cluster/services', services));
+app.use(route.get('/api/clusters/:cluster/containerInstances', containerInstances));
 app.use(route.get('/api/clusters/:cluster/task/:task', task));
 
 /**
@@ -141,9 +143,36 @@ function *list(){
  * @param {String} cluster
  */
 
+function *servicesAndContainerInstances(cluster){
+  let cache = this.cache;
+  this.body = {
+    services: cache.services(cluster),
+    containerInstances: cache.containerInstances(cluster),
+  };
+}
+
+/**
+ * Returns a json array of a given cluster in
+ * the path parameter.
+ *
+ * @param {String} cluster
+ */
+
 function *services(cluster){
   let cache = this.cache;
   this.body = cache.services(cluster);
+}
+
+/**
+ * Returns a json array of a given cluster in
+ * the path parameter.
+ *
+ * @param {String} cluster
+ */
+
+function *containerInstances(cluster){
+  let cache = this.cache;
+  this.body = cache.containerInstances(cluster);
 }
 
 /**

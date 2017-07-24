@@ -73,6 +73,14 @@ Cache.prototype.poll = function *(){
   services = flatten(services);
   debug('received %d services', services.length);
 
+  // from all the clusters, retrieve the container instances
+  let containerCalls = clusters.map(cluster => {
+    return ecs.containerInstances(cluster.clusterArn);
+  });
+  let containerInstances = yield Promise.all(containerCalls);
+  containerInstances = flatten(containerInstances);
+  debug('received %d containers', containerInstances.length);
+
   // from all the tasks, get the versions running, then cache the result.
   let taskCache = this.tasks;
   let taskCalls = services.map(service => {
@@ -88,7 +96,7 @@ Cache.prototype.poll = function *(){
   let tasks = yield Promise.all(taskCalls);
   services.forEach((service, i) => service.task = tasks[i].taskDefinition);
   debug('received %d tasks', services.length);
-  this.cache(clusters, services);
+  this.cache(clusters, services, containerInstances);
 };
 
 /**
@@ -114,6 +122,20 @@ Cache.prototype.services = function(cluster){
 };
 
 /**
+ * Return the containerInstances, optionally filtered by
+ * cluster.
+ *
+ * @param {String} cluster [optional]
+ */
+
+Cache.prototype.containerInstances = function(cluster){
+  if (!cluster) return this._containerInstances;
+  return this._containerInstances.filter(instance => {
+    return clusterName(instance.clusterArn) == cluster;
+  });
+};
+
+/**
  * Sets the existing clusters and services in
  * the cache
  *
@@ -121,9 +143,10 @@ Cache.prototype.services = function(cluster){
  * @param {Array} services
  */
 
-Cache.prototype.cache = function(clusters, services){
+Cache.prototype.cache = function(clusters, services, containerInstances){
   this._clusters = clusters;
   this._services = services;
+  this._containerInstances = containerInstances;
 };
 
 /**
