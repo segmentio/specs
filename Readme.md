@@ -24,7 +24,7 @@ It's easiest to run Specs with docker. Assuming you have your AWS credentials ex
       -e "AWS_REGION=$AWS_REGION" \
       -e "AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN" \
       -p 3000:3000 \
-      segment/specs
+      $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/specs
 
 ## IAM Permissions
 

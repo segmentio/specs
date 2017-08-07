@@ -8,6 +8,9 @@ machine:
 dependencies:
   cache_directories:
     - node_modules
+  pre:
+    - sudo pip install awscli==1.11.76
+    - $(aws ecr get-login --region $AWS_REGION)
   override:
     - make node_modules
 
@@ -22,4 +25,6 @@ deployment:
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker build -t segment/specs .
+      - docker tag segment/specs:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/specs:latest
       - docker push segment/specs:latest
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/specs:latest
