@@ -4,6 +4,8 @@ import moment from 'moment';
 import classname from 'classname';
 import styles from './index.css';
 
+const awsRegion = process.env.AWS_REGION
+
 export default class ServiceTaskDef extends Component {
   render() {
     const { family, revision, definition } = this.props;
@@ -14,7 +16,11 @@ export default class ServiceTaskDef extends Component {
           <tbody>
             <tr>
               <th>task def</th>
-              <td><a href={"https://us-west-2.console.aws.amazon.com/ecs/home?region=us-west-2#/taskDefinitions/"+family+"/"+revision}>{family}:{revision}</a></td>
+              <td>
+                <a href={`https://${awsRegion}.console.aws.amazon.com/ecs/home?region=${awsRegion}#/taskDefinitions/${family}/${revision}`}>
+                  {family}:{revision}
+                </a>
+              </td>
             </tr>
             <tr>
               <th>CPU</th>

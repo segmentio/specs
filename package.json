@@ -9,7 +9,7 @@
   },
   "scripts": {
     "server": "nodemon --harmony --ignore client --ignore build bin/server",
-    "client": "webpack-dev-server -d --hot --inline --port 3001",
+    "client": "webpack-dev-server -d --hot --inline --port 9999",
     "dev": "concurrently --kill-others \"npm run server\" \"npm run client\"",
     "build": "webpack -p"
   },

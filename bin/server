@@ -8,6 +8,6 @@ let app = require('..');
  * Run the server.
  */
 
-let port = process.env.PORT || 3000;
+let port = process.env.PORT || 9998;
 
 app.listen(port);

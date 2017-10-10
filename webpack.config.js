@@ -9,6 +9,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path');
 
 const env = process.env.NODE_ENV || 'development';
+const awsRegion = process.env.AWS_REGION || 'us-west-2';
 
 const config = module.exports = {
   context: path.join(__dirname, 'client'),
@@ -24,7 +25,8 @@ const config = module.exports = {
   plugins: [
     new DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(env)
+        NODE_ENV: JSON.stringify(env),
+        AWS_REGION: JSON.stringify(awsRegion)
       }
     }),
     new HtmlWebpackPlugin({
@@ -67,7 +69,7 @@ const config = module.exports = {
     historyApiFallback: true,
     proxy: {
       '/api/*': {
-        target: 'http://localhost:3000/'
+        target: 'http://localhost:9998/'
       }
     }
   }
