@@ -9,7 +9,9 @@ export default class ServiceStats extends Component {
     const { service } = this.props;
     const { runningCount, desiredCount } = service;
     const { image } = service.task.containerDefinitions[0];
-    const updated = moment(service.deployments[0].updatedAt).fromNow();
+    const date = moment(service.deployments[0].updatedAt)
+    const updatedAgo = date.fromNow();
+    const updatedIso = date.toISOString();
     const classes = classname({
       [styles.ServiceStats]: true,
       [styles['ServiceStats--left-aligned']]: this.props.left
@@ -20,15 +22,19 @@ export default class ServiceStats extends Component {
           <tbody>
             <tr>
               <th>Image</th>
-              <td>{image}</td>
+              <td title={image}>{image}</td>
             </tr>
             <tr>
               <th>Running</th>
-              <td>{runningCount} out of {desiredCount}</td>
+              <td title={`${runningCount} out of ${desiredCount}`}>
+                {runningCount} out of {desiredCount}
+              </td>
             </tr>
             <tr>
               <th>Updated</th>
-              <td>{updated}</td>
+              <td title={updatedIso}>
+                <time dateTime={updatedIso}>{updatedAgo}</time>
+              </td>
             </tr>
           </tbody>
         </table>
