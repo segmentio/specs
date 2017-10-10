@@ -8,6 +8,11 @@ machine:
 dependencies:
   cache_directories:
     - node_modules
+  pre:
+    # Authenticate to ECR
+    - curl -O https://bootstrap.pypa.io/get-pip.py && python get-pip.py
+    - pip install awscli
+    - $(aws ecr get-login --no-include-email --region $AWS_REGION)
   override:
     - make node_modules
 
@@ -20,11 +25,6 @@ deployment:
   dockerhub:
     branch: master
     commands:
-      # Authenticate to ECR
-      - curl -O https://bootstrap.pypa.io/get-pip.py && python get-pip.py
-      - pip install awscli
-      - $(aws ecr get-login --no-include-email --region $AWS_REGION)
-
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker build -t segment/specs .
       - docker push segment/specs:latest
