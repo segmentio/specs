@@ -25,7 +25,7 @@ export default class ServiceList extends Component {
     return (
       <li key={n + service.serviceArn} className={styles.ServiceListItem}>
         <Link to={`/${clusterName}/${service.serviceName}`}>
-          <h3>{service.serviceName}</h3>
+          <h3 title={service.serviceName}>{service.serviceName}</h3>
           <ServiceStats service={service} />
         </Link>
       </li>
