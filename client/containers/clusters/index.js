@@ -60,7 +60,7 @@ export default class ClustersContainer extends Component {
     }
 
     const clusterName = this.props.params.clusterName;
-    const cluster = this.getByName('cluster', clusterName);
+    const cluster = this.findCluster(clusterName);
     // TODO: if no matching cluster, show an error
     return cluster && cluster.clusterArn;
   }
@@ -88,9 +88,10 @@ export default class ClustersContainer extends Component {
    */
 
   renderServiceSheet() {
+    const clusterName = this.props.params.clusterName;
     const serviceName = this.props.params.serviceName;
     if (!serviceName) return null;
-    const service = this.getByName('service', serviceName);
+    const service = this.findService(clusterName, serviceName);
     if (!service) return null;
     // TODO: if no matching service is found, show an error
     return <Service service={service} />
@@ -107,22 +108,29 @@ export default class ClustersContainer extends Component {
   }
 
   /**
-   * Get item of `type` by its `name`.
+   * Get cluster by its `name`.
    */
 
-  getByName(type, name) {
-    const items = type === 'service'
-      ? this.state.services
-      : this.state.clusters;
-    const prop = `${type}Name`;
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i];
-      if (item[prop] === name) {
-        return item;
-      }
+  findCluster(name) {
+    return this.state.clusters.find((cluster) => {
+      return cluster.clusterName == name;
+    });
+  }
+
+  /**
+   * Get service by its `clusterName` and `serviceName`.
+   */
+
+  findService(clusterName, serviceName) {
+    const cluster = this.findCluster(clusterName);
+    if (!cluster) {
+      return;
     }
 
-    return null;
+    return this.state.services.find((service) => {
+      return service.clusterArn === cluster.clusterArn &&
+        service.serviceName === serviceName;
+    });
   }
 
   /**

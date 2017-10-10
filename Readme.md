@@ -52,13 +52,13 @@ Then you should be off to the races.
 
 To develop, you'll first need to install [node][node]. Then, you can run the server and client builders, both of which will watch for changes and hot-reload.
 
-In one terminal window (which has your AWS credentials exported), run the following:
+Run the server and client (with has your AWS credentials exported) with the following:
 
-    $ make server
+    $ npm run dev
 
-In another, do:
+If you encouter this error: `ConfigError: Missing region in config` you will need to provide a default config environment or set the AWS_REGION environment variable like the following:
 
-    $ make dev-server
+    $ AWS_REGION=us-east-1 npm run dev
 
 
 Now visit [http://localhost:3001/](http://localhost:3001/) =)
