@@ -69,7 +69,7 @@ const config = module.exports = {
     historyApiFallback: true,
     proxy: {
       '/api/*': {
-        target: 'http://localhost:9998/'
+        target: 'http://localhost:3000/'
       }
     }
   }
