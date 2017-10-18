@@ -41,8 +41,8 @@ const config = module.exports = {
         exclude: /node_modules/,
         loaders: [
           'react-hot',
-          'babel'
-        ]
+          'babel?cacheDirectory=./node_modules/.webpack_cache/'
+        ],
       },
       {
         test: /\.css$/,

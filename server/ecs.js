@@ -50,6 +50,15 @@ ECS.prototype.services = function(cluster){
     .then(this.describeServices);
 };
 
+
+ECS.prototype.containerInstances = function(cluster){
+  debug('ecs.containerInstances(%s)', cluster);
+  return this.listContainerInstances(cluster)
+    .bind(this)
+    .then(this.describeContainerInstances);
+};
+
+
 /**
  * Lists all the clusters from the API.
  *
@@ -82,7 +91,41 @@ ECS.prototype.describeClusters = function(clusters){
   return new Promise((resolve, reject) => {
     ecs.describeClusters({ clusters: clusters }, (err, data) => {
       if (err) return reject(err);
-      resolve(data);
+      resolve(data);      
+    });
+  });
+}
+
+/**
+ * List container instances for clusters.
+ *
+ * @private
+ * @param {Array[string]} clusters
+ * @return {Promise}
+ */
+
+ECS.prototype.listContainerInstances = function(cluster) {
+  let ecs = this.ecs;
+  debug('ecs.listContainerInstances()'); 
+
+  return new Promise((resolve, reject) => {
+    ecs.listContainerInstances({ cluster }, (err, instanceIds) => {
+      if (err) return reject(err);
+      const containerInstances = instanceIds.containerInstanceArns;
+      resolve([cluster, containerInstances]);
+    });
+  });  
+}
+
+
+
+ECS.prototype.describeContainerInstances = function([cluster, containerInstances]) {
+  let ecs = this.ecs;
+  debug('ecs.listContainerInstances()'); 
+  return new Promise((resolve, reject) => {
+    ecs.describeContainerInstances({ cluster, containerInstances }, (err, instances) => {
+      if (err) return reject(err);
+      resolve(instances.containerInstances.map(ci => Object.assign({ clusterArn: cluster }, ci)));
     });
   });
 }
