@@ -1,0 +1,19 @@
+
+.ServiceTask {
+  display: inline-block;
+  list-style: none;
+  padding: 0;
+  width: calc(100% - 38px);
+  padding: 20px 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  border: 1px solid #e3e4e6;
+  border-radius: 4px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.05);
+}
+
+.ServiceTask th {
+  text-align: right;
+  padding-right: 5px;
+  vertical-align: top;
+}
