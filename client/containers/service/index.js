@@ -68,7 +68,6 @@ export default class Service extends Component {
               <TabContent for="tasks">
                 <ServiceTasks
                   clusterName={this.props.clusterName}
-                  service={this.props.service}
                   tasks={this.props.tasks}
                 />
               </TabContent>

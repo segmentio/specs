@@ -198,8 +198,8 @@ export default class ClustersContainer extends Component {
     .get(`/api/clusters/${cluster}/tasks/${service}`)
     .end((err, { body }) =>{
       if (err) {
-        err = err || new Error(`unable to fetch tasks in cluster ${cluster.clusterName} family ${service} (${res.status})`);
-        return this.setState({ error: err.message });
+        const message = err.message || `unable to fetch tasks in cluster ${cluster.clusterName} family ${service} (${res.status})`;
+        return this.setState({ error: message });
       }
 
       this.setState({ tasks: this.state.tasks.concat(body)})
