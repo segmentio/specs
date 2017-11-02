@@ -17,6 +17,7 @@ export default class ClustersContainer extends Component {
       error: null,
       clusters: [],
       services: [],
+      tasks: [],
       activeClusterArn: null,
       activeServiceArn: null
     };
@@ -93,8 +94,10 @@ export default class ClustersContainer extends Component {
     if (!serviceName) return null;
     const service = this.findService(clusterName, serviceName);
     if (!service) return null;
+    const tasks = this.findTasks(service);
+
     // TODO: if no matching service is found, show an error
-    return <Service service={service} />
+    return <Service service={service} clusterName={clusterName} tasks={tasks} />
   }
 
   /**
@@ -131,6 +134,14 @@ export default class ClustersContainer extends Component {
       return service.clusterArn === cluster.clusterArn &&
         service.serviceName === serviceName;
     });
+  }
+
+  /**
+   * Get all tasks beloning to a service
+   */
+
+  findTasks(service) {
+    return this.state.tasks.filter((task) => `service:${service.serviceName}` === task.group);
   }
 
   /**
@@ -172,6 +183,26 @@ export default class ClustersContainer extends Component {
       this.setState({
         services: flatten(services)
       });
+      res.body.forEach(service => {
+        this.fetchTasks(cluster.clusterName, service.serviceName)
+      })
     }.bind(this));
+  }
+
+  /**
+   * Fetch running tasks for the given `cluster` and `service`.
+   */
+
+  fetchTasks(cluster, service) {
+    request
+    .get(`/api/clusters/${cluster}/tasks/${service}`)
+    .end((err, { body }) =>{
+      if (err) {
+        const message = err.message || `unable to fetch tasks in cluster ${cluster.clusterName} family ${service} (${res.status})`;
+        return this.setState({ error: message });
+      }
+
+      this.setState({ tasks: this.state.tasks.concat(body)})
+    });
   }
 };

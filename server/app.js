@@ -72,7 +72,7 @@ app.use(function *(next){
 
 app.use(route.get('/api/clusters', list));
 app.use(route.get('/api/clusters/:cluster', services));
-app.use(route.get('/api/clusters/:cluster/task/:task', task));
+app.use(route.get('/api/clusters/:cluster/tasks/:family', tasks));
 
 /**
  * Static routes.
@@ -153,8 +153,8 @@ function *services(cluster){
  * @param {String} taskArn
  */
 
-function *task(taskArn){
-  let ecs = this.state.ecs;
-  let task = yield ecs.task(taskArn);
+function *tasks(cluster, family){
+  let ecs = this.ecs;
+  let task = yield ecs.tasks(cluster, family);
   this.body = task;
 }

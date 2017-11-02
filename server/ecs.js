@@ -39,7 +39,7 @@ ECS.prototype.clusters = function(){
  * services for a cluster.
  *
  * @public
- * @param {String} cluster - the cluster arn 
+ * @param {String} cluster - the cluster arn
  * @return {Promise} [services]
  */
 
@@ -48,6 +48,24 @@ ECS.prototype.services = function(cluster){
   return this.listServices(cluster)
     .bind(this)
     .then(this.describeServices);
+};
+
+
+/**
+ * Return a promise to return the full list of
+ * running tasks for a cluster.
+ *
+ * @public
+ * @param {String} cluster - the cluster name
+ * @param {String} family - the cluster name
+ * @return {Promise} [tasks]
+ */
+
+ECS.prototype.tasks = function(cluster, family){
+  debug('ecs.tasks(%s)', cluster, family);
+  return this.listTasks(cluster, family)
+    .bind(this)
+    .then(this.describeTasks);
 };
 
 /**
@@ -78,7 +96,7 @@ ECS.prototype.listClusters = function(){
 
 ECS.prototype.describeClusters = function(clusters){
   let ecs = this.ecs;
-  debug('ecs.describeClusters()'); 
+  debug('ecs.describeClusters()');
   return new Promise((resolve, reject) => {
     ecs.describeClusters({ clusters: clusters }, (err, data) => {
       if (err) return reject(err);
@@ -96,7 +114,7 @@ ECS.prototype.describeClusters = function(clusters){
 
 ECS.prototype.listServices = function(cluster){
   let ecs = this.ecs;
-  debug('ecs.listServices()'); 
+  debug('ecs.listServices()');
   return new Promise((resolve, reject) => {
     let services = [];
     list(cluster, null, (err, services) => {
@@ -126,7 +144,7 @@ ECS.prototype.listServices = function(cluster){
 
 ECS.prototype.describeServices = function ([cluster, services]){
   let ecs = this.ecs;
-  debug('ecs.describeServices called'); 
+  debug('ecs.describeServices called');
   return new Promise((resolve, reject) => {
     let chunks = chunk(services, 10);
     let batch = new Batch();
@@ -151,7 +169,7 @@ ECS.prototype.describeServices = function ([cluster, services]){
         ecs.describeServices(req, done);
       };
     }
-  }); 
+  });
 }
 
 /**
@@ -162,11 +180,51 @@ ECS.prototype.describeServices = function ([cluster, services]){
  */
 
 ECS.prototype.task = function (task){
+  debug('ecs.task called');
   return new Promise((resolve, reject) => {
     let req = { taskDefinition: task };
     this.ecs.describeTaskDefinition(req, (err, res) => {
       if (err) return reject(err);
       resolve(res);
+    });
+  });
+}
+
+/**
+ * Lists tasks in the cluster belonging to the given family
+ *
+ * @public
+ * @param {String} cluster the cluster name
+ * @param {String} family the family name
+ * @return {Promise} { tasks, cluster}
+ */
+
+ECS.prototype.listTasks = function (cluster, family){
+  debug('ecs.listTasks called');
+  return new Promise((resolve, reject) => {
+    const req = { cluster, family };
+    this.ecs.listTasks(req, (err, res) => {
+      if (err) return reject(err);
+      const tasks = res.taskArns.map(taskArns => taskArns.split('/')[1])
+      resolve({ tasks, cluster });
+    });
+  });
+}
+
+/**
+ * Describes the given tasks
+ *
+ * @public
+ * @param {Object} { cluster, tasks }
+ * @return {Promise} [tasks]
+ */
+
+ECS.prototype.describeTasks = function (req){
+  debug('ecs.describeTasks called');
+  return new Promise((resolve, reject) => {
+    this.ecs.describeTasks(req, (err, res) => {
+      if (err) return reject(err);
+      resolve(res.tasks);
     });
   });
 }

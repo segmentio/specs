@@ -9,6 +9,7 @@ import { Tabs, TabLink, TabContent } from 'react-tabs-redux';
 import Sheet from '../../components/sheet';
 import ServiceEventList from '../../components/service-event-list';
 import ServiceStats from '../../components/service-stats';
+import ServiceTasks from '../../components/service-tasks';
 import ServiceTaskDef from '../../components/service-task-def';
 import styles from './index.css';
 
@@ -46,6 +47,11 @@ export default class Service extends Component {
                     <TabLink to="events">Events</TabLink>
                   </a>
                 </li>
+                <li>
+                  <a href="#tab=tasks">
+                    <TabLink to="tasks">Tasks</TabLink>
+                  </a>
+                </li>
               </ul>
             </nav>
 
@@ -58,6 +64,12 @@ export default class Service extends Component {
                   family={this.props.service.task.family}
                   revision={this.props.service.task.revision}
                   definition={this.props.service.task.containerDefinitions[0]} />
+              </TabContent>
+              <TabContent for="tasks">
+                <ServiceTasks
+                  clusterName={this.props.clusterName}
+                  tasks={this.props.tasks}
+                />
               </TabContent>
             </div>
           </Tabs>
