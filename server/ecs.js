@@ -15,8 +15,9 @@ module.exports = ECS;
  * @param {AWS} aws - an aws client
  */
 
-function ECS(aws){
+function ECS(aws, opts){
   this.ecs = new aws.ECS();
+  this.disableTasks = opts.disableTasks;
 }
 
 /**
@@ -62,6 +63,10 @@ ECS.prototype.services = function(cluster){
  */
 
 ECS.prototype.tasks = function(cluster, family){
+  if (this.disableTasks) {
+    debug('listing tasks is disabled');
+    return Promise.resolve([]);
+  }
   debug('ecs.tasks(%s)', cluster, family);
   return this.listTasks(cluster, family)
     .bind(this)

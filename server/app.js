@@ -17,7 +17,9 @@ let serve = require('koa-static');
  */
 
 let app = koa();
-let ecs = new ECS(AWS);
+let ecs = new ECS(AWS, {
+  disableTasks: process.env.DISABLE_TASKS
+});
 let cache = new Cache(ecs);
 
 /**
