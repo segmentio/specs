@@ -80,6 +80,9 @@ ECS.prototype.tasks = function(cluster, family){
  */
 
 ECS.prototype.listClusters = function(){
+  if (process.env.CLUSTER_ARNS_CSV) {
+    return Promise.resolve(process.env.CLUSTER_ARNS_CSV.split(','));
+  }
   let ecs = this.ecs;
   debug('ecs.listClusters()');
   return new Promise((resolve, reject) => {
