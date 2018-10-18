@@ -58,17 +58,17 @@ ECS.prototype.services = function(cluster){
  *
  * @public
  * @param {String} cluster - the cluster name
- * @param {String} family - the cluster name
+ * @param {String} serviceName - the service name
  * @return {Promise} [tasks]
  */
 
-ECS.prototype.tasks = function(cluster, family){
+ECS.prototype.tasks = function(cluster, serviceName){
   if (this.disableTasks) {
     debug('listing tasks is disabled');
     return Promise.resolve([]);
   }
-  debug('ecs.tasks(%s)', cluster, family);
-  return this.listTasks(cluster, family)
+  debug('ecs.tasks(%s)', cluster, serviceName);
+  return this.listTasks(cluster, serviceName)
     .bind(this)
     .then(this.describeTasks);
 };
@@ -200,14 +200,14 @@ ECS.prototype.task = function (task){
  *
  * @public
  * @param {String} cluster the cluster name
- * @param {String} family the family name
+ * @param {String} serviceName the service name
  * @return {Promise} { tasks, cluster}
  */
 
-ECS.prototype.listTasks = function (cluster, family){
+ECS.prototype.listTasks = function (cluster, serviceName){
   debug('ecs.listTasks called');
   return new Promise((resolve, reject) => {
-    const req = { cluster, family };
+    const req = { cluster, serviceName };
     this.ecs.listTasks(req, (err, res) => {
       if (err) return reject(err);
       const tasks = res.taskArns.map(taskArns => taskArns.split('/')[1])
