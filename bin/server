@@ -11,3 +11,11 @@ let app = require('..');
 let port = process.env.PORT || 3000;
 
 app.listen(port);
+
+process.on('SIGINT', function () {
+  process.exit();
+});
+
+process.on('SIGTERM', function() {
+  process.exit();
+})
