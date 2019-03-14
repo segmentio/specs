@@ -34,8 +34,8 @@ jobs:
       - *restore_node_modules
       - setup_remote_docker
       - run:
-          name: Install AWS-CLI
-          command: apk -Uuv add groff less python py-pip && pip install awscli
+          name: Install Docker & AWS-CLI
+          command: apk -Uuv add groff less python py-pip docker && pip install awscli
       - run:
           name: Login on ECR
           command: eval $(aws ecr get-login --region us-east-1 --no-include-email)
