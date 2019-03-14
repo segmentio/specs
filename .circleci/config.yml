@@ -54,4 +54,4 @@ workflows:
           filters:
             branches:
               only:
-                - circleci
+                - circleciv2
