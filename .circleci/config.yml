@@ -33,7 +33,7 @@ jobs:
       - checkout
       - *restore_node_modules
       - setup_remote_docker
-      - run: pip install awscli
+      - run: pip install awscli --user
       - run: eval $(aws ecr get-login --region us-east-1 --no-include-email)
       - run: docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - run: docker build -t segment/$CONTAINER_NAME .
