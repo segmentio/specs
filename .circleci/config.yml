@@ -33,13 +33,27 @@ jobs:
       - checkout
       - *restore_node_modules
       - setup_remote_docker
-      - run: pip install awscli --user
-      - run: eval $(aws ecr get-login --region us-east-1 --no-include-email)
-      - run: docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker build -t segment/$CONTAINER_NAME .
-      - run: docker push segment/$CONTAINER_NAME:latest
-      - run: docker tag segment/$CONTAINER_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$CONTAINER_NAME:latest
-      - run: docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$CONTAINER_NAME:latest
+      - run:
+          name: Install AWS-CLI
+          command: pip install awscli --user
+      - run:
+          name: Login on ECR
+          command: eval $(aws ecr get-login --region us-east-1 --no-include-email)
+      - run:
+          name: Login on Docker Hub
+          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - run:
+          name: Build Image
+          command: docker build -t segment/$CONTAINER_NAME .
+      - run:
+          name: Push the image on Docker Hub
+          command: docker push segment/$CONTAINER_NAME:latest
+      - run:
+          name: Tag the image for ECR
+          command: docker tag segment/$CONTAINER_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$CONTAINER_NAME:latest
+      - run:
+          name: Push the image on ECR
+          command: docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$CONTAINER_NAME:latest
 workflows:
   version: 2
   build_test_deploy:
@@ -54,4 +68,4 @@ workflows:
           filters:
             branches:
               only:
-                - circleciv2
+                - master
