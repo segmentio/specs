@@ -26,7 +26,7 @@ jobs:
       - run: echo todo
   deploy:
     docker:
-      - image: *image
+      - image: circleci/python
         environment:
           CONTAINER_NAME: specs
     steps:
