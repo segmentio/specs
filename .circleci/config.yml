@@ -68,4 +68,4 @@ workflows:
           filters:
             branches:
               only:
-                - circleciv2
+                - master
