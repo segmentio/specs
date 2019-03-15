@@ -1,0 +1,72 @@
+version: 2.1
+
+defaults:
+  image: &image circleci/node:6
+  node_modules_cache_key: &node_modules_cache_key v1-{{ checksum "package-lock.json" }}
+  restore_node_modules: &restore_node_modules
+    restore_cache:
+      keys:
+        - *node_modules_cache_key
+jobs:
+  build:
+    docker:
+      - image: *image
+    steps:
+      - checkout
+      - run: make node_modules
+      - save_cache:
+          key: *node_modules_cache_key
+          paths:
+            - node_modules
+  test:
+    docker:
+      - image: *image
+    steps:
+      - checkout
+      - *restore_node_modules
+      - run: echo todo
+  deploy:
+    docker:
+      - image: alpine
+        environment:
+          CONTAINER_NAME: specs
+    steps:
+      - checkout
+      - *restore_node_modules
+      - setup_remote_docker
+      - run:
+          name: Install Docker & AWS-CLI
+          command: apk -Uuv add groff less python py-pip docker && pip install awscli
+      - run:
+          name: Login on ECR
+          command: eval $(aws ecr get-login --region us-east-1 --no-include-email)
+      - run:
+          name: Login on Docker Hub
+          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - run:
+          name: Build Image
+          command: docker build -t segment/$CONTAINER_NAME .
+      - run:
+          name: Push the image on Docker Hub
+          command: docker push segment/$CONTAINER_NAME:latest
+      - run:
+          name: Tag the image for ECR
+          command: docker tag segment/$CONTAINER_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$CONTAINER_NAME:latest
+      - run:
+          name: Push the image on ECR
+          command: docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$CONTAINER_NAME:latest
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
