@@ -41,8 +41,8 @@ jobs:
       - *restore_node_modules
       - setup_remote_docker
       - aws-cli/install
-      - aws-cli/configure
       - run: echo $ECR_URL
+      - aws-cli/configure
       - aws-ecr/ecr-login
       - run:
           name: build, push on docker hub and ECR
