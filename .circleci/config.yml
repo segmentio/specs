@@ -64,4 +64,4 @@ workflows:
           filters:
             branches:
               only:
-                - cirleciv2
+                - circleciv2
