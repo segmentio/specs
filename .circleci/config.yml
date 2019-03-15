@@ -1,4 +1,5 @@
-version: 2
+version: 2.1
+
 defaults:
   image: &image circleci/node:6
   node_modules_cache_key: &node_modules_cache_key v1-{{ checksum "package-lock.json" }}
@@ -6,6 +7,11 @@ defaults:
     restore_cache:
       keys:
         - *node_modules_cache_key
+
+orbs:
+  aws-cli: circleci/aws-cli@0.1.1
+  aws-ecr: circleci/aws-ecr@3.0.0
+
 jobs:
   build:
     docker:
@@ -26,34 +32,24 @@ jobs:
       - run: echo todo
   deploy:
     docker:
-      - image: alpine
+      - image: circleci/python
         environment:
           CONTAINER_NAME: specs
+          ECR_URL: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
     steps:
       - checkout
       - *restore_node_modules
       - setup_remote_docker
+      - aws-cli/install
+      - aws-cli/configure
+      - aws-ecr/ecr-login
       - run:
-          name: Install Docker & AWS-CLI
-          command: apk -Uuv add groff less python py-pip docker && pip install awscli
-      - run:
-          name: Login on ECR
-          command: eval $(aws ecr get-login --region us-east-1 --no-include-email)
-      - run:
-          name: Login on Docker Hub
-          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
-      - run:
-          name: Build Image
-          command: docker build -t segment/$CONTAINER_NAME .
-      - run:
-          name: Push the image on Docker Hub
-          command: docker push segment/$CONTAINER_NAME:latest
-      - run:
-          name: Tag the image for ECR
-          command: docker tag segment/$CONTAINER_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$CONTAINER_NAME:latest
-      - run:
-          name: Push the image on ECR
-          command: docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$CONTAINER_NAME:latest
+          name: build, push on docker hub and ECR
+          command: |
+            echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin
+            docker build -t segment/${CONTAINER_NAME}:${CIRCLE_BUILD_NUM} -t segment/${CONTAINER_NAME}:latest -t ${ECR_URL}/${CONTAINER_NAME}:latest .
+            docker push segment/${CONTAINER_NAME}:latest
+            docker push ${ECR_URL}/${CONTAINER_NAME}:latest
 workflows:
   version: 2
   build_test_deploy:
@@ -68,4 +64,4 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - cirleciv2
