@@ -227,6 +227,9 @@ ECS.prototype.listTasks = function (cluster, serviceName){
 ECS.prototype.describeTasks = function (req){
   debug('ecs.describeTasks called');
   return new Promise((resolve, reject) => {
+    if (req.tasks.length === 0)
+      return resolve([]);
+
     this.ecs.describeTasks(req, (err, res) => {
       if (err) return reject(err);
       resolve(res.tasks);
