@@ -48,4 +48,3 @@ workflows:
             branches:
               only:
                 - master
-                - systemizer/fix-publish
