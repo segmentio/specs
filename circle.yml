@@ -25,8 +25,9 @@ jobs:
       - run:
           name: Authenticate with AWS and Docker
           command: |
-            pip install awscli
-            $(aws ecr get-login --region $AWS_REGION)
+            curl -O https://bootstrap.pypa.io/get-pip.py && sudo python get-pip.py
+            pip install awscli==1.11.91
+            aws ecr get-login --no-include-email --region $AWS_REGION | sh
             docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
       - run:
@@ -47,3 +48,4 @@ workflows:
             branches:
               only:
                 - master
+                - systemizer/fix-publish
