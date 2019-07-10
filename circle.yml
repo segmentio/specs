@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: /go/src/github.com/segmentio/specs
     docker:
-      - image: node:6
+      - image: circleci/node:6
     steps:
       - checkout
       - restore_cache:
@@ -17,7 +17,7 @@ jobs:
   publish:
     working_directory: /go/src/github.com/segmentio/specs
     docker:
-      - image: node:6
+      - image: circleci/node:6
     steps:
       - checkout
       - restore_cache:
