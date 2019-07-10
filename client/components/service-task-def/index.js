@@ -40,7 +40,7 @@ export default class ServiceTaskDef extends Component {
               <th>environment</th>
               <td>
                 <ul className={styles.ServiceTaskDefEnvVars}>
-                  {definition.environment.map(({ name, value }) =>
+                  {definition.environment.sort((a, b) => a.name > b.name ? 1 : -1).map(({ name, value }) =>
                     <li key={`__${family}_${revision}_env_${name}`}><code>{name}={value}</code></li>
                   )}
                 </ul>

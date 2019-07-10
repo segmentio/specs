@@ -1,32 +1,49 @@
+version: 2
+jobs:
+  build:
+    working_directory: /go/src/github.com/segmentio/specs
+    docker:
+      - image: node:6
+    steps:
+      - checkout
+      - restore_cache:
+          key: dev-dependency-cache-{{ checksum "package-lock.json" }}
+      - run: make node_modules
+      - save_cache:
+          key: dev-dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
 
-machine:
-  node:
-    version: 6
-  services:
-    - docker
+  publish:
+    working_directory: /go/src/github.com/segmentio/specs
+    docker:
+      - image: node:6
+    steps:
+      - checkout
+      - restore_cache:
+          key: dev-dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Authenticate with AWS and Docker
+          command: |
+            pip install awscli
+            $(aws ecr get-login --region $AWS_REGION)
+            docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
-dependencies:
-  cache_directories:
-    - node_modules
-  override:
-    - make node_modules
+      - run:
+          name: Build and Publish Docker Images
+          command: |
+            docker build -t segment/specs .
+            docker push segment/specs:latest
+            docker tag segment/specs:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/specs:latest
+            docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/specs:latest
 
-test:
-  override:
-    - echo todo
-
-deployment:
-  # deploy to dockerhub
-  dockerhub:
-    branch: master
-    commands:
-      # Authenticate to ECR
-      - pip install awscli
-      - $(aws ecr get-login --region $AWS_REGION)
-
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker build -t segment/specs .
-      - docker push segment/specs:latest
-
-      - docker tag segment/specs:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/specs:latest
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/specs:latest
+workflows:
+  version: 2
+  build-and-publish:
+    jobs:
+      - build
+      - publish:
+          filters:
+            branches:
+              only:
+                - master
