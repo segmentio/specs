@@ -19,7 +19,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: dev-dependency-cache-{{ checksum "package-lock.json" }}
+          key: cache-{{ checksum "package-lock.json" }}
       - run:
           name: Authenticate with AWS and Docker
           command: |
