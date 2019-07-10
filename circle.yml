@@ -27,7 +27,7 @@ jobs:
             curl -O https://bootstrap.pypa.io/get-pip.py && sudo python get-pip.py
             sudo pip install awscli==1.11.91
             aws ecr get-login --no-include-email --region $AWS_REGION | sh
-            docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
 
       - run:
           name: Build and Publish Docker Images
