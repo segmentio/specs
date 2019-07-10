@@ -1,7 +1,6 @@
 version: 2
 jobs:
   build:
-    working_directory: /go/src/github.com/segmentio/specs
     docker:
       - image: circleci/node:6
     steps:
@@ -15,7 +14,6 @@ jobs:
             - ./node_modules
 
   publish:
-    working_directory: /go/src/github.com/segmentio/specs
     docker:
       - image: circleci/node:6
     steps:
