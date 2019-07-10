@@ -25,7 +25,7 @@ jobs:
       - run:
           name: Authenticate with AWS and Docker
           command: |
-            apt-get update && apt-get install python-dev
+            apt-get update && apt-get install -y python-dev
             curl -O https://bootstrap.pypa.io/get-pip.py && python get-pip.py
             pip install awscli==1.11.91
             aws ecr get-login --no-include-email --region $AWS_REGION | sh
