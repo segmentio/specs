@@ -1,4 +1,3 @@
 node_modules
 .envrc
-build#ignore git history to avoid commiting sensitive info
-.git
+build
