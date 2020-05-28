@@ -1,3 +1,5 @@
 node_modules
 .envrc
 build
+#ignore git history to prevent unwanted secrets and bloat
+.git
