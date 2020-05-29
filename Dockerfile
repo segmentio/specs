@@ -4,7 +4,7 @@ COPY package* ./
 RUN npm install
 COPY . .
 RUN make build
-FROM node:6
+FROM node:12.17-alpine3.10
 WORKDIR /src
 COPY package* ./
 RUN npm install --production
