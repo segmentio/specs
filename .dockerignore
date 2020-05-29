@@ -3,3 +3,4 @@ node_modules
 build
 #ignore git history to prevent unwanted secrets and bloat
 .git
+
