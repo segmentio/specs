@@ -1,10 +1,10 @@
-FROM node:6 as build
+FROM node:12.18-alpine3.11 as build
 WORKDIR /src
 COPY package* ./
 RUN npm install
 COPY . .
 RUN make build
-FROM node:12.17-alpine3.10
+FROM node:12.18-alpine3.11
 
 WORKDIR /src
 COPY package* ./
