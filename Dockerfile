@@ -1,6 +1,7 @@
 FROM node:12.18-alpine3.11 as build
 WORKDIR /src
 COPY package* ./
+RUN apk add --update make
 RUN npm install
 COPY . .
 RUN make build
