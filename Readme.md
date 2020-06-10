@@ -1,3 +1,6 @@
+# ⚠️ Unmaintained ⚠️
+
+This repository is unmaintained, but left as a historical relic for any wishing to adapt it. Godspeed!
 
 # Specs
 
