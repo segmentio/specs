@@ -1,11 +1,12 @@
-FROM node:6 as build
+FROM node:12.18-alpine3.11 as build
 WORKDIR /src
 COPY package* ./
+RUN apk add --update make
 RUN npm install
 COPY . .
 RUN make build
+FROM node:12.18-alpine3.11
 
-FROM node:6
 WORKDIR /src
 COPY package* ./
 RUN npm install --production
