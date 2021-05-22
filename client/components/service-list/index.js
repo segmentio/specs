@@ -8,7 +8,10 @@ import styles from './index.css';
 
 export default class ServiceList extends Component {
   render() {
-    const services = this.matchingServices();
+    const services = this.matchingServices().sort((a,b) => {
+        return new Date(a.deployments[0].updatedAt).getTime() -
+               new Date(b.deployments[0].updatedAt).getTime()
+    }).reverse();
     return (
       <ul className={styles.ServiceList}>
         {services.map(::this.renderServiceItem)}
