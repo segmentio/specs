@@ -1,11 +1,11 @@
-FROM node:12.18-alpine3.11 as build
+FROM 528451384384.dkr.ecr.us-west-2.amazonaws.com/segment-node:17.2 as build
 WORKDIR /src
 COPY package* ./
 RUN apk add --update make
 RUN npm install
 COPY . .
 RUN make build
-FROM node:12.18-alpine3.11
+FROM 528451384384.dkr.ecr.us-west-2.amazonaws.com/segment-node:17.2
 
 WORKDIR /src
 COPY package* ./
