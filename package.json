@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.5.3",
+    "aws-sdk": "^2.1337.0",
     "batch": "^0.5.3",
     "bluebird": "^3.0.6",
     "chunk": "0.0.2",
