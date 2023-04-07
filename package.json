@@ -18,7 +18,7 @@
   "dependencies": {
     "aws-sdk": "^2.5.3",
     "batch": "^0.5.3",
-    "bluebird": "^3.0.6",
+    "bluebird": "^3.7.2",
     "chunk": "0.0.2",
     "co-defer": "^1.0.0",
     "debug": "^2.2.0",
